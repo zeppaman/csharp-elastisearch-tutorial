@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  elasticsearchtest:
+    image: ${DOCKER_REGISTRY-}elasticsearchtest
+    build:
+      context: .
+      dockerfile: ElasticSearchTest/Dockerfile
+  elasticsearchtest:
+    image: elasticsearch:7.4.0
+    environment:
+      - discovery.type=single-node
+      - http.cors.enabled=true
+      - http.cors.allow-credentials=true
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-origin=/https?:\/\/localhost(:[0-9]+)?/
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9300:9200
